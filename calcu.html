@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Calcu</title>
+</head>
+
+<body>
+	<style>
+		.cont{
+			display: flex;
+			flex-flow: column nowrap;
+		}
+		#screen{
+			height: 5vh;
+			font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+			font-size: 30px;
+			padding: 10px;
+			border: 2px solid #12E1D8;
+			width: 20%;
+			align-self: center;
+			margin: 10px auto;
+		}
+		.btn{
+			color: #FFFFFF;
+			background-color: #312F2F;
+			font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", "monospace";
+			border: 2px solid #312F2F;
+			margin: 1px;
+		}
+	</style>
+	
+	<div class="cont">
+	<div id="screen"></div>
+	
+	<div style="align-self: center;">
+	<button id="2" data-moi="number" onClick="gate()" class="btn">2</button>
+	<button id="4" data-moi="number" onClick="gate()" class="btn">4</button>
+	<button id="6" data-moi="number" onClick="gate()" class="btn">6</button>
+	<button id="8" data-moi="number" onClick="gate()" class="btn">8</button>
+	<button id="0" data-moi="number" onClick="gate()" class="btn">0</button>
+	<br>
+	<button id="1" data-moi="number" onClick="gate()" class="btn">1</button>
+	<button id="3" data-moi="number" onClick="gate()" class="btn">3</button>
+	<button id="5" data-moi="number" onClick="gate()" class="btn">5</button>
+	<button id="7" data-moi="number" onClick="gate()" class="btn">7</button>
+	<button id="9" data-moi="number" onClick="gate()" class="btn">9</button>
+	<br><br>
+		<button id="+" data-moi="operator" onClick="gate()" class="btn">+</button>
+		<button id="-" data-moi="operator" onClick="gate()" class="btn">-</button>
+		<button id="x" data-moi="operator" onClick="gate()" class="btn">x</button>
+		<button id="/" data-moi="operator" onClick="gate()" class="btn">/</button>
+		<button id="." data-moi="special" onClick="gate()" class="btn">.</button>
+		<br><br>
+		<button data-moi="trigger" onClick="gate()" class="btn">Enter</button>
+		<!-- <button onClick="backspace()">&lt;-</button> -->
+		<button onClick="erase()" class="btn">Erase</button>
+	</div>
+		
+	</div>
+	
+	<script>
+		var holder = [];
+		var numArray = [];
+		var modulus;
+		var sc = document.getElementById('screen');
+		
+		function gate(){	
+			let x = event.target.id;
+			let y = event.target.dataset;
+			
+			if (y.moi == 'number'){
+				holder.push(parseFloat(x));
+				console.log(holder);
+				display(x);
+			}
+			if (y.moi == 'special'){
+				holder.push(x);
+				console.log(holder);
+				display(x);
+			}
+			else if (y.moi == 'operator'){
+				modulus = x;
+				numArray.push(holder);
+				holder = [];
+				console.log(holder);
+				display(x);
+			}
+			else if (y.moi == 'trigger'){
+				numArray.push(holder);
+				console.log(numArray);
+				abacus();
+			}
+		}
+		
+		function display(id){
+			sc.insertAdjacentText('beforeend', id);
+		}
+		
+		/*function backspace(){
+			
+		}*/
+		
+		function erase(){
+			sc.innerHTML = "";
+			holder = [];
+			numArray = [];
+			modulus = "";
+		}
+		
+		function abacus(){
+			let a = parseFloat(numArray[0].join(''));
+			let b = parseFloat(numArray[1].join(''));
+			let res;
+			
+			if (modulus == '+'){
+				res = a+b;
+			}
+			else if (modulus == '-'){
+				res = a-b;
+			}
+			else if (modulus == 'x'){
+				res = a*b;
+			}
+			else if (modulus == '/'){
+				res = a/b;
+				//res = res.toFixed(3);
+			}
+			
+			sc.innerHTML = res;
+		}
+	</script>
+</body>
+</html>
